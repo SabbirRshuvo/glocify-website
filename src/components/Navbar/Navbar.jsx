@@ -1,79 +1,202 @@
 import { useState } from "react";
-import { CiSearch } from "react-icons/ci";
-import { FaHeart, FaShoppingCart } from "react-icons/fa";
-import { HiMenu } from "react-icons/hi";
-import { IoMdClose } from "react-icons/io";
+import {
+  FaBars,
+  FaHeart,
+  FaSearch,
+  FaShoppingCart,
+  FaTimes,
+  FaUser,
+} from "react-icons/fa";
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const toggleMenu = () => {
-    setOpen(!open);
+    setIsMenuOpen(!isMenuOpen);
   };
+
+  const toggleSearch = () => {
+    setIsSearchOpen(!isSearchOpen);
+  };
+
+  const navLinks = [
+    { name: "Home", href: "#home", active: true },
+    { name: "Products", href: "#products" },
+    { name: "Categories", href: "#categories" },
+    { name: "About", href: "#about" },
+    { name: "Contact", href: "#contact" },
+  ];
+
   return (
-    <div className="container mx-auto flex  justify-between  py-8 items-center">
-      {/* logo */}
-      <div>
-        <h2 className="text-4xl font-semibold hover:border-b-2  hover:border-orange-600 pb-1">
-          Gr<span className="text-orange-600">O</span>cify
-        </h2>
-      </div>
-      {/* desktop  menu */}
-      <ul className="md:flex space-x-6 text-zinc-600 hidden items-center">
-        <li className="  text-orange-600 transition-all duration-100 hover:border-b hover:border-orange-500 font-semibold">
-          Home
-        </li>
-        <li className=" hover:text-orange-600 transition-all duration-100 hover:border-b hover:border-orange-500 font-semibold">
-          About Us
-        </li>
-        <li className=" hover:text-orange-600 transition-all duration-100 hover:border-b hover:border-orange-500 font-semibold ">
-          Process
-        </li>
-        <li className=" hover:text-orange-600 transition-all duration-100 hover:border-b hover:border-orange-500 font-semibold ">
-          Contact Us
-        </li>
-      </ul>
-      {/* actions */}
-      <div className="flex items-center space-x-2">
-        <div className="flex items-center border rounded-full px-4 py-1 border-orange-500">
-          <input
-            className="focus:outline-none "
-            type="text"
-            placeholder="Search here..."
-          />
-          <CiSearch className="w-6 h-6 bg-orange-500 text-white rounded-full flex justify-center items-center" />
+    <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md shadow-lg z-50 border-b border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 lg:h-20">
+          {/* Left side - Logo/Brand Name */}
+          <div className="shrink-0">
+            <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 cursor-pointer hover:text-orange-600 transition-colors duration-300">
+              Gl<span className="text-orange-600">o</span>cify
+            </h1>
+          </div>
+
+          {/* Middle - Navigation Links (Desktop) */}
+          <div className="hidden lg:block">
+            <div className="ml-10 flex items-baseline space-x-8">
+              {navLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className={`px-3 py-2 text-sm font-medium transition-all duration-300 hover:text-orange-600 relative group ${
+                    link.active
+                      ? "text-orange-600"
+                      : "text-gray-700 hover:text-orange-600"
+                  }`}
+                >
+                  {link.name}
+                  <span
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-orange-600 transform origin-left transition-transform duration-300 ${
+                      link.active
+                        ? "scale-x-100"
+                        : "scale-x-0 group-hover:scale-x-100"
+                    }`}
+                  ></span>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Right side - Search, Favorites, Cart */}
+          <div className="flex items-center space-x-4">
+            {/* Search - Desktop */}
+            <div className="hidden md:flex items-center">
+              <div
+                className={`flex items-center transition-all duration-300 ${
+                  isSearchOpen ? "w-64" : "w-10"
+                }`}
+              >
+                <div className="relative flex items-center w-full">
+                  <input
+                    type="text"
+                    placeholder="Search products..."
+                    className={`w-full py-2 pl-4 pr-10 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 ${
+                      isSearchOpen ? "opacity-100" : "opacity-0 w-0"
+                    }`}
+                  />
+                  <button
+                    onClick={toggleSearch}
+                    className="absolute right-0 p-2 text-gray-400 hover:text-orange-600 transition-colors duration-300"
+                  >
+                    <FaSearch className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Search - Mobile */}
+            <button
+              onClick={toggleSearch}
+              className="md:hidden p-2 text-gray-400 hover:text-orange-600 transition-colors duration-300"
+            >
+              <FaSearch className="w-5 h-5" />
+            </button>
+
+            {/* Favorites */}
+            <div className="relative">
+              <button className="p-2 text-gray-400 hover:text-orange-600 transition-colors duration-300 group">
+                <FaHeart className="w-5 h-5" />
+                <span className="absolute -top-1 -right-1 bg-orange-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  3
+                </span>
+              </button>
+            </div>
+
+            {/* Shopping Cart */}
+            <div className="relative">
+              <button className="p-2 text-gray-400 hover:text-orange-600 transition-colors duration-300 group">
+                <FaShoppingCart className="w-5 h-5" />
+                <span className="absolute -top-1 -right-1 bg-orange-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  5
+                </span>
+              </button>
+            </div>
+
+            {/* User Account - Desktop */}
+            <div className="hidden lg:block">
+              <button className="p-2 text-gray-400 hover:text-orange-600 transition-colors duration-300">
+                <FaUser className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="lg:hidden">
+              <button
+                onClick={toggleMenu}
+                className="p-2 text-gray-400 hover:text-orange-600 transition-colors duration-300"
+              >
+                {isMenuOpen ? (
+                  <FaTimes className="w-6 h-6" />
+                ) : (
+                  <FaBars className="w-6 h-6" />
+                )}
+              </button>
+            </div>
+          </div>
         </div>
-        <FaHeart className="w-6 h-6 " />
-        <FaShoppingCart className="w-6 h-6 " />
+
+        {/* Mobile Search Bar */}
+        {isSearchOpen && (
+          <div className="md:hidden pb-4 px-4">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search products..."
+                className="w-full py-3 pl-4 pr-12 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              />
+              <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-orange-600 transition-colors duration-300">
+                <FaSearch className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
-      {/* mobile action */}
-      <div className="items-center  md:hidden flex ">
-        <button onClick={toggleMenu} className="cursor-pointer">
-          {open ? (
-            <HiMenu className="h-6 w-6" />
-          ) : (
-            <IoMdClose className="h-6 w-6" />
-          )}
-        </button>
+
+      {/* Mobile Navigation Menu */}
+      <div
+        className={`lg:hidden transition-all duration-300 ease-in-out ${
+          isMenuOpen
+            ? "max-h-96 opacity-100"
+            : "max-h-0 opacity-0 overflow-hidden"
+        }`}
+      >
+        <div className="px-4 pt-2 pb-4 space-y-1 bg-white border-t border-gray-100">
+          {navLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              className={`block px-4 py-3 text-base font-medium rounded-lg transition-all duration-300 ${
+                link.active
+                  ? "text-orange-600 bg-orange-50"
+                  : "text-gray-700 hover:text-orange-600 hover:bg-orange-50"
+              }`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {link.name}
+            </a>
+          ))}
+
+          {/* Mobile User Account */}
+          <div className="border-t border-gray-100 pt-3 mt-3">
+            <a
+              href="#account"
+              className="flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-all duration-300"
+            >
+              <FaUser className="w-5 h-5 mr-3" />
+              My Account
+            </a>
+          </div>
+        </div>
       </div>
-      {/* mobile menu */}
-      {!open ? (
-        <ul className=" absolute bg-white top-20 left-0 w-full  md:hidden flex flex-col  items-center  py-4 space-y-4 shadow-lg ">
-          <li className=" text-orange-600 transition-all duration-100 hover:border-b hover:border-orange-500 font-semibold">
-            Home
-          </li>
-          <li className=" hover:text-orange-600 transition-all duration-100 hover:border-b hover:border-orange-500 font-semibold">
-            About Us
-          </li>
-          <li className=" hover:text-orange-600 transition-all duration-100 hover:border-b hover:border-orange-500 font-semibold ">
-            Process
-          </li>
-          <li className=" hover:text-orange-600 transition-all duration-100 hover:border-b hover:border-orange-500 font-semibold ">
-            Contact Us
-          </li>
-        </ul>
-      ) : null}
-    </div>
+    </nav>
   );
 };
 
