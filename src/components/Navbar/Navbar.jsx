@@ -1,7 +1,15 @@
+import { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
+import { HiMenu } from "react-icons/hi";
+import { IoMdClose } from "react-icons/io";
 
 const Navbar = () => {
+  const [open, setOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setOpen(!open);
+  };
   return (
     <div className="container mx-auto flex  justify-between  py-8 items-center">
       {/* logo */}
@@ -39,6 +47,32 @@ const Navbar = () => {
         <FaShoppingCart className="w-6 h-6 " />
       </div>
       {/* mobile action */}
+      <div className="items-center  md:hidden flex ">
+        <button onClick={toggleMenu} className="cursor-pointer">
+          {open ? (
+            <HiMenu className="h-6 w-6" />
+          ) : (
+            <IoMdClose className="h-6 w-6" />
+          )}
+        </button>
+      </div>
+      {/* mobile menu */}
+      {!open ? (
+        <ul className=" absolute bg-white top-20 left-0 w-full  md:hidden flex flex-col  items-center  py-4 space-y-4 shadow-lg ">
+          <li className=" text-orange-600 transition-all duration-100 hover:border-b hover:border-orange-500 font-semibold">
+            Home
+          </li>
+          <li className=" hover:text-orange-600 transition-all duration-100 hover:border-b hover:border-orange-500 font-semibold">
+            About Us
+          </li>
+          <li className=" hover:text-orange-600 transition-all duration-100 hover:border-b hover:border-orange-500 font-semibold ">
+            Process
+          </li>
+          <li className=" hover:text-orange-600 transition-all duration-100 hover:border-b hover:border-orange-500 font-semibold ">
+            Contact Us
+          </li>
+        </ul>
+      ) : null}
     </div>
   );
 };
